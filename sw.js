@@ -1,6 +1,6 @@
 /* NoteX service worker — offline shell cache.
    Bump CACHE when shipping a new version; the activate step drops older ones. */
-const CACHE = 'notex-v3';
+const CACHE = 'notex-v4';
 const CORE = [
   './',
   './index.html',
@@ -39,7 +39,10 @@ self.addEventListener('fetch', e => {
   if (req.mode === 'navigate' || url.pathname.endsWith('.html')) {
     e.respondWith((async () => {
       try {
-        const fresh = await fetch(req);
+        // 'reload' forces past the HTTP cache — without it, a plain reload
+        // right after a new deploy can still show the previous version
+        // until the browser's own cache entry expires.
+        const fresh = await fetch(req, { cache: 'reload' });
         const c = await caches.open(CACHE);
         c.put(req, fresh.clone());
         return fresh;
