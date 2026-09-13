@@ -978,8 +978,10 @@ function renderHomeDashboard(){
       <h2>Welcome to NoteX</h2>
       <p>Create your first deck to start adding cards. Every card you write works as a flashcard, a multiple-choice question, and an identification question.</p>
       <button class="btn btn-primary" id="btn-empty-new-deck">${ICONS.plus} New deck</button>
-    </div>`;
+    </div>
+    ${renderDataSectionHTML()}`;
     document.getElementById('btn-empty-new-deck').addEventListener('click',startNewDeck);
+    bindDataSectionEvents();
     return;
   }
 
